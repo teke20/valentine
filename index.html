@@ -5,103 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valentine's Day Invitation</title>
     <style>
-        /* Previous CSS remains the same */
-        /* Add these new styles */
-        .celebration-page {
-            display: none;
+        body {
+            font-family: 'Arial', cursive;
+            background-color: #ffe6f2;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ff99cc;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+            position: relative;
+            max-width: 600px;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #cc0066;
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #660033;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        .heart {
+            color: #ff0066;
+            font-size: 3em;
+            animation: pulse 1.5s infinite;
+        }
+
+        .buttons {
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 10px 30px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #ff0066;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #cc0066;
+            color: white;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .hearts-container {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: #ff0066;
-            z-index: 1000;
+            pointer-events: none;
         }
 
-        .confetti {
+        .floating-heart {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #fff;
-            animation: confetti-fall 3s linear infinite;
+            opacity: 0.7;
+            animation: float 3s infinite linear;
         }
 
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
-
-        .celebration-content {
-            position: relative;
-            z-index: 1001;
-            color: white;
-            font-size: 3em;
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Previous HTML remains the same -->
-    <!-- Add celebration page -->
-    <div class="celebration-page" id="celebrationPage">
-        <div class="hearts-container" id="celebrationHearts"></div>
-        <div class="container celebration-content">
-            <div class="heart">🎉❤️🎉</div>
-            <h1>Hooray! Let's Celebrate! 🥂</h1>
-            <p>Looking forward to our wonderful time together!</p>
+    <div class="hearts-container" id="hearts"></div>
+    
+    <div class="container">
+        <div class="heart">❤️</div>
+        <h1>Will You Be My Valentine?</h1>
+        <p>My Dearest,</p>
+        <p>Roses are red, violets are blue,<br>
+        There's no one in this world<br>
+        I'd rather be with than you!</p>
+        <p>Let's make this Valentine's Day special together. 💖</p>
+        
+        <div class="buttons">
+            <button id="yesBtn" onclick="respondYes()">YES!</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
     </div>
 
     <script>
-        let yesScale = 1;
-        let noScale = 1;
-
-        function createConfetti() {
-            const container = document.getElementById('celebrationPage');
-            for (let i = 0; i < 200; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                container.appendChild(confetti);
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
             }
-        }
-
-        function respondYes() {
-            document.getElementById('celebrationPage').style.display = 'flex';
-            createConfetti();
-            // Add celebration effects
-            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3'); // Add celebration sound
-            audio.play();
         }
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            
-            // Increase yes button size
-            yesScale += 0.2;
-            noScale = Math.max(0.5, noScale - 0.1);
-            
-            yesBtn.style.transform = `scale(${yesScale})`;
-            noBtn.style.transform = `scale(${noScale})`;
-            
-            // Move button position
             noBtn.style.position = 'absolute';
             noBtn.style.left = Math.random() * 80 + '%';
             noBtn.style.top = Math.random() * 80 + '%';
-            
-            // Add message after first click
-            if (!document.getElementById('message')) {
-                const message = document.createElement('p');
-                message.id = 'message';
-                message.textContent = "Are you sure? 😢";
-                message.style.color = "#cc0066";
-                document.querySelector('.buttons').prepend(message);
-            }
         }
 
-        // Rest of the previous JavaScript remains
+        function respondYes() {
+            window.location.href = "https://example.com/yes-response"; // Replace with your URL
+        }
+
+        // Create floating hearts on load
+        createHearts();
     </script>
 </body>
 </html>
