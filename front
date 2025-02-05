@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Invitation</title>
+    <style>
+        /* Previous CSS remains the same */
+        /* Add these new styles */
+        .celebration-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ff0066;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .celebration-content {
+            position: relative;
+            z-index: 1001;
+            color: white;
+            font-size: 3em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Previous HTML remains the same -->
+    <!-- Add celebration page -->
+    <div class="celebration-page" id="celebrationPage">
+        <div class="hearts-container" id="celebrationHearts"></div>
+        <div class="container celebration-content">
+            <div class="heart">🎉❤️🎉</div>
+            <h1>Hooray! Let's Celebrate! 🥂</h1>
+            <p>Looking forward to our wonderful time together!</p>
+        </div>
+    </div>
+
+    <script>
+        let yesScale = 1;
+        let noScale = 1;
+
+        function createConfetti() {
+            const container = document.getElementById('celebrationPage');
+            for (let i = 0; i < 200; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                container.appendChild(confetti);
+            }
+        }
+
+        function respondYes() {
+            document.getElementById('celebrationPage').style.display = 'flex';
+            createConfetti();
+            // Add celebration effects
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3'); // Add celebration sound
+            audio.play();
+        }
+
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            // Increase yes button size
+            yesScale += 0.2;
+            noScale = Math.max(0.5, noScale - 0.1);
+            
+            yesBtn.style.transform = `scale(${yesScale})`;
+            noBtn.style.transform = `scale(${noScale})`;
+            
+            // Move button position
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = Math.random() * 80 + '%';
+            noBtn.style.top = Math.random() * 80 + '%';
+            
+            // Add message after first click
+            if (!document.getElementById('message')) {
+                const message = document.createElement('p');
+                message.id = 'message';
+                message.textContent = "Are you sure? 😢";
+                message.style.color = "#cc0066";
+                document.querySelector('.buttons').prepend(message);
+            }
+        }
+
+        // Rest of the previous JavaScript remains
+    </script>
+</body>
+</html>
